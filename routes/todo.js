@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Add Todo
+// Add Todos
 router.post('/', async (req, res) => {
   const { title, content, userId } = req.body;
   console.log(req.body);
@@ -39,6 +39,19 @@ router.post('/', async (req, res) => {
     console.error('Error creating todo:', error); // Log detailed error
     res.status(500).json({ error: 'Failed to create todo' });
   }
+});
+
+// Delete Todos
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await prisma.todo.delete({ where: { id: Number(id) } });
+        res.json({ message: "Todo deleted successfully", id });
+    } catch (error) {
+        console.error("Delete error:", error);
+        res.status(500).json({ error: "Failed to delete todo" });
+    }
 });
 
 module.exports = router;

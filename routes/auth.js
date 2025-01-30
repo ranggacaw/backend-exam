@@ -10,15 +10,15 @@ const SECRET_KEY = 'yoursecretkey';
 
 // Register
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, name, password } = req.body;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
-            data: { email, password: hashedPassword },
+            data: { email, name, password: hashedPassword },
         });
 
-        await admin.auth().createUser({ email, password });
+        // await admin.auth().createUser({ email, name, password });
 
         res.json({ message: 'User registered successfully', user });
     } catch (error) {
